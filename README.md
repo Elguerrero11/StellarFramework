@@ -1,5 +1,24 @@
 # StellarFramework
 
+
+## Licencia de xplugin
+
+Este proyecto está licenciado bajo la licencia GNU General Public License v3.0.
+
+<details>
+  <summary>Ver detalles de las licencias de software de terceros</summary>
+  
+  Este proyecto incluye software desarrollado por otros proyectos bajo las siguientes licencias:
+
+  - **Stellar Core** bajo la Licencia GNU General Public License v3.0.
+  - **BoostedYAML** desarrollado por [Autor de BoostedYAML] bajo la Licencia Apache 2.0. Puedes obtener una copia de la Licencia Apache en la carpeta `licenses` de este proyecto o en [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0).
+  - **CommandAPI** desarrollado por [Autor de CommandAPI] bajo la Licencia MIT. Puedes obtener una copia de la Licencia MIT en la carpeta `licenses` de este proyecto.
+  - **Adventure** desarrollado por [Autor de Adventure] bajo la Licencia MIT. Puedes obtener una copia de la Licencia MIT en la carpeta `licenses` de este proyecto.
+
+  Las licencias completas se encuentran en la carpeta `licenses`.
+
+</details>
+
  ### Important advices:
  
    - I think I will delete and made again the repository in the future when the framework be in a more stable version, for clean the commits and releases.
