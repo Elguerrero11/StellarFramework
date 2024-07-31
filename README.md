@@ -13,6 +13,7 @@ This project is licensed under the GNU General Public License v3.0.
 
 <details>
   <summary>View third-party software license details</summary>
+
   
   This project includes software developed by other projects under the following licenses:
 
