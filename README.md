@@ -23,5 +23,6 @@ This project is licensed under the GNU General Public License v3.0.
   - **Adventure** developed by **KyoriPowered** under the **MIT License**.
   
   <br>
+  
   The complete licenses can be found in the `licenses` folder.
 </details>
