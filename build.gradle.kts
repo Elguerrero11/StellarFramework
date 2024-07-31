@@ -27,9 +27,8 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
 
     implementation("dev.dejvokep:boosted-yaml:1.3.1")
-    implementation("dev.jorel:commandapi-shade:8.8.0")
-    implementation("commons-io:commons-io:2.11.0")
-    implementation("net.kyori:adventure-text-logger-slf4j:4.13.1")
+    implementation("dev.jorel:commandapi-bukkit-shade:9.0.0")
+    implementation("net.kyori:adventure-platform-bukkit:4.3.0")
 }
 
 tasks {
@@ -37,18 +36,22 @@ tasks {
         mapOf(
                 "dev.dejvokep.boostedyaml" to "boosted-yaml",
                 "dev.jorel.commandapi" to "command-api",
-                "org.apache.commons.io" to "commons-io",
                 "org.jetbrains.annotations" to "jetbrains-annotations",
-                "net.kyori" to "adventure-text-logger-slf4j"
+                "net.kyori" to "adventure",
+                "org.intellij" to "intellij",
+                "org.slf4j" to "slf4j"
         ).forEach { (packageName, newName) ->
             relocate(packageName, "libs.$newName")
         }
 
         archiveClassifier.set("")
-        minimize()
         exclude("META-INF/LICENSE.txt")
-        exclude("META-INF/NOTICE.txt")
-        relocate("resources/LICENSE", "LICENSE")
+        minimize()
+        mergeServiceFiles {
+            exclude("LICENSE")
+            from("LICENSE")
+        }
+
     }
     build {
         dependsOn(shadowJar)

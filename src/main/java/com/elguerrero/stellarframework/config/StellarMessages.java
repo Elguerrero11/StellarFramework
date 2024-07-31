@@ -1,7 +1,10 @@
 package com.elguerrero.stellarframework.config;
 
 import com.elguerrero.stellarframework.StellarPlugin;
-import com.elguerrero.stellarframework.utils.StellarUtils;
+import com.elguerrero.stellarframework.commands.StHelpCmd;
+import com.elguerrero.stellarframework.utils.StErrorLogUtils;
+import com.elguerrero.stellarframework.utils.StMessageUtils;
+import com.elguerrero.stellarframework.utils.StMixUtils;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
 import dev.dejvokep.boostedyaml.settings.dumper.DumperSettings;
@@ -10,9 +13,12 @@ import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
 import dev.dejvokep.boostedyaml.settings.updater.MergeRule;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import lombok.Getter;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public abstract class StellarMessages {
@@ -21,7 +27,7 @@ public abstract class StellarMessages {
 	protected YamlDocument messagesFile = null;
 	protected String messagesFilePath;
 	protected InputStream inputStream;
-	protected String messagesVersionKeyPath;
+	protected String messagesVersionKeyPath = "Lang_Version";
 
 	protected String selectedLang = "";
 
@@ -64,11 +70,30 @@ public abstract class StellarMessages {
 	@Getter
 	protected String addonReloaded = "";
 
+	// Help page
+
+	@Getter
+	protected List<List<String>> helpPages = new ArrayList<>();
+	@Getter
+	protected String helpPageFirstLine = "";
+	@Getter
+	protected String helpPageLastLine = "";
+	@Getter
+	protected String helpNextPageArrow = "";
+	@Getter
+	protected String helpPreviousPageArrow = "";
+	@Getter
+	protected String previousPageArrowHover = "";
+	@Getter
+	protected String nextPageArrowHover = "";
+	//@Getter
+    //protected String helpPageNotExist = "";
+
+
 	protected StellarMessages() {
 
 		messagesFilePath = langFolder.getPath() + selectedLang + ".yml";
 		inputStream = StellarPlugin.getPluginInstance().getResource(langFolder.getPath() + selectedLang);
-		messagesVersionKeyPath = "Messages_Version";
 
 	}
 
@@ -80,16 +105,16 @@ public abstract class StellarMessages {
 
 			if (Lang.isBlank()){
 				selectedLang = "en_US";
-				StellarUtils.sendConsoleWarnMessage("The language selected in the config is not valid, the default language 'en_US' will be used.");
+				StMessageUtils.sendConsoleWarnMessage("The language selected in the config is not valid, the default language 'en_US' will be used.");
 			}
 
 			if (checkLangFileExist(Lang)){
 				selectedLang = Lang;
-				StellarUtils.sendConsoleInfoMessage("&aLanguage " + Lang + " selected V");
+				StMessageUtils.sendConsoleInfoMessage("&aLanguage " + Lang + " selected V");
 			}
 
 		} catch (Exception ex){
-			StellarUtils.logErrorException(ex,"default");
+			StErrorLogUtils.logErrorException(ex,"default");
 		}
 
 	}
@@ -100,7 +125,7 @@ public abstract class StellarMessages {
 
 			final File yamlFile = new File(StellarPlugin.getPluginInstance().getPluginFolder() + "Lang", fileName + ".yml");
 
-			if (StellarUtils.filePluginExist(new File("Lang"),true)) {
+			if (StMixUtils.filePluginExist(new File("Lang"),true)) {
 
 				return yamlFile.exists() && yamlFile.isFile();
 
@@ -108,7 +133,7 @@ public abstract class StellarMessages {
 			return false;
 
 		} catch (Exception ex){
-			StellarUtils.logErrorException(ex,"default");
+			StErrorLogUtils.logErrorException(ex,"default");
 			return false;
 		}
 	}
@@ -142,7 +167,7 @@ public abstract class StellarMessages {
 			callLoadMessagesVariables();
 
 		} catch (IOException ex) {
-			StellarUtils.logErrorException(ex, "default");
+			StErrorLogUtils.logErrorException(ex, "default");
 		}
 
 	}
@@ -156,8 +181,6 @@ public abstract class StellarMessages {
 			pluginReloaded = messagesFile.getString("Plugin_Reloaded");
 			pluginError = messagesFile.getString("Plugin_Error");
 			noPermission = messagesFile.getString("No_Permission");
-			debugEnabled = messagesFile.getString("Debug_Enabled");
-			debugDisabled = messagesFile.getString("Debug_Disabled");
 			debugStatusEnabled = messagesFile.getString("Debug_Status_Enabled");
 			debugStatusDisabled = messagesFile.getString("Debug_Status_Disabled");
 			debugMessageFormat = messagesFile.getString("Debug_Message_Format");
@@ -170,10 +193,21 @@ public abstract class StellarMessages {
 			addonCannotReload = messagesFile.getString("Addon_Cannot_Reload");
 			addonReloaded = messagesFile.getString("Addon_Reloaded");
 
+			// Help page
+
+			helpPageFirstLine = messagesFile.getString("Help_Page_First_Line");
+			helpPageLastLine = messagesFile.getString("Help_Page_Last_Line");
+			helpNextPageArrow = messagesFile.getString("Help_Next_Page_Arrow");
+			helpPreviousPageArrow = messagesFile.getString("Help_Previous_Page_Arrow");
+			previousPageArrowHover = messagesFile.getString("Previous_Page_Arrow_Hover");
+			nextPageArrowHover = messagesFile.getString("Next_Page_Arrow_Hover");
+			//helpPageNotExist = messagesFile.getString("Help_Page_Not_Exist");
+			StHelpCmd.addHelpPage("Help_Page_1");
+
 			loadMessagesVariables();
 
 		} catch (Exception ex){
-			StellarUtils.logErrorException(ex,"default");
+			StErrorLogUtils.logErrorException(ex,"default");
 		}
 
 	}

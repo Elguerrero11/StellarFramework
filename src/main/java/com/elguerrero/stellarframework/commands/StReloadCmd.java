@@ -1,53 +1,51 @@
 package com.elguerrero.stellarframework.commands;
 
+import com.elguerrero.stellarframework.systems.CacheManagers;
 import com.elguerrero.stellarframework.StellarPlugin;
-import com.elguerrero.stellarframework.utils.StellarUtils;
+import com.elguerrero.stellarframework.utils.*;
 import dev.jorel.commandapi.CommandAPICommand;
 import org.bukkit.entity.Player;
 
-public class StReloadCmd {
+public final class StReloadCmd {
 
 	private StReloadCmd() {
 	}
 
-	public static void registerReloadCommand() {
+	public static void registerReloadCmd() {
 
 		try {
-			new CommandAPICommand(StellarPlugin.getPluginInstance().getPluginName() + "-reload")
-					.withRequirement((sender) -> {
-						if (!StellarUtils.senderIsConsole(sender) && StellarUtils.checkPlayerPermission((Player) sender, "reload", true)) {
-							return true;
-						} else if (!(StellarUtils.senderIsConsole(sender) && StellarUtils.checkPlayerPermission((Player) sender, "reload", false))) {
-							return false;
-						} else {
-							return true;
-						}
-					})
-					.withHelp("Reload the plugin", "Reload the plugin config.yml and en_US.yml")
+
+			CacheManagers.addCommand(new CommandAPICommand("reload")
+					.withRequirement(sender -> StMixUtils.checkCommandRequirement(sender, "reload"))
+					.withHelp("Reload the plugin", "Reload the plugin config and lang files.")
 					.executes((sender, args) -> {
 
 						try {
-							StellarUtils.loadPluginConfigs();
 
-							if (StellarUtils.senderIsConsole(sender)) {
-								StellarUtils.sendConsoleInfoMessage("&ei &aThe plugin has been reloaded. V");
+							StMixUtils.loadPluginConfigs();
+
+							if (StMixUtils.senderIsConsole(sender)) {
+								StMessageUtils.sendConsoleInfoMessage("&ei &aThe plugin has been reloaded. V");
 							} else {
-								StellarUtils.sendMessagePlayer((Player) sender, StellarUtils.colorize(StellarPlugin.getBasicMessagesInstance().getPluginReloaded()));
-								StellarUtils.sendConsoleInfoMessage("&ei &aThe plugin has been reloaded by " + sender.getName() + ". V");
+
+								Player player = (Player) sender;
+								StMessageUtils.sendMessagePlayer(player, StellarPlugin.getBasicMessagesInstance().getPluginReloaded());
+								StMessageUtils.sendDebugMessage("&ei &aThe plugin has been reloaded by " + player.getName() + ". V");
 							}
+
 						} catch (Exception ex) {
 
-							if (!StellarUtils.senderIsConsole(sender)) {
-								StellarUtils.sendMessagePlayer((Player) sender, StellarUtils.colorize(StellarPlugin.getBasicMessagesInstance().getPluginError()));
+							if (!StMixUtils.senderIsConsole(sender)) {
+								StMessageUtils.sendMessagePlayer((Player) sender, StellarPlugin.getBasicMessagesInstance().getPluginError());
+								StErrorLogUtils.logErrorException(ex, sender.getName() + "has tried to reload the plugin but an error ocurred, please check your errors.log file in the plugin folder.");
+							} else {
+								StErrorLogUtils.logErrorException(ex, "The console has tried to reload the plugin but an error ocurred, please check your errors.log file in the plugin folder.");
 							}
-							StellarUtils.logErrorException(ex, sender.getName() + "has tried to reload the plugin but an error ocurred, please check your errors.log file in the plugin folder.");
 						}
-
-					})
-					.register();
+					}));
 
 		} catch (Exception ex) {
-			StellarUtils.logErrorException(ex, "default");
+			StErrorLogUtils.logErrorException(ex, "default");
 		}
 
 	}

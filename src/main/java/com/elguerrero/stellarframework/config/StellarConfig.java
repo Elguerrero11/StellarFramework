@@ -1,7 +1,7 @@
 package com.elguerrero.stellarframework.config;
 
 import com.elguerrero.stellarframework.StellarPlugin;
-import com.elguerrero.stellarframework.utils.StellarUtils;
+import com.elguerrero.stellarframework.utils.StErrorLogUtils;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
 import dev.dejvokep.boostedyaml.serialization.YamlSerializer;
@@ -77,7 +77,7 @@ public abstract class StellarConfig {
 			callLoadConfigVariables();
 
 		} catch (Exception ex) {
-			StellarUtils.logErrorException(ex, "default");
+			StErrorLogUtils.logErrorException(ex, "default");
 		}
 
 	}
@@ -143,7 +143,7 @@ public abstract class StellarConfig {
 			}
 
 		} catch (IOException ex) {
-			StellarUtils.logErrorException(ex, "default");
+			StErrorLogUtils.logErrorException(ex, "default");
 		}
 
 	}
@@ -158,7 +158,7 @@ public abstract class StellarConfig {
 			autoUpdater = StellarPlugin.getBasicConfigInstance().getConfigFile().getBoolean("Auto_Update_Configs");
 
 		} catch (Exception ex) {
-			StellarUtils.logErrorException(ex, "default");
+			StErrorLogUtils.logErrorException(ex, "default");
 		}
 
 	}
@@ -170,7 +170,7 @@ public abstract class StellarConfig {
 			loadConfigVariables();
 
 		} catch (Exception ex) {
-			StellarUtils.logErrorException(ex, "default");
+			StErrorLogUtils.logErrorException(ex, "default");
 		}
 
 	}

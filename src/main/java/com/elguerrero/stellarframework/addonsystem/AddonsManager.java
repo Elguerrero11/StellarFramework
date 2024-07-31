@@ -3,7 +3,9 @@ package com.elguerrero.stellarframework.addonsystem;
 
 import com.elguerrero.stellarframework.StellarPlugin;
 import com.elguerrero.stellarframework.api.AddonsInterfaz;
-import com.elguerrero.stellarframework.utils.StellarUtils;
+import com.elguerrero.stellarframework.utils.StErrorLogUtils;
+import com.elguerrero.stellarframework.utils.StMessageUtils;
+import com.elguerrero.stellarframework.utils.StMixUtils;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.jorel.commandapi.CommandAPI;
 import lombok.Getter;
@@ -44,12 +46,12 @@ public class AddonsManager {
 
 		if (StellarPlugin.getPluginInstance().isAddonsEnabled()) {
 
-			StellarUtils.sendConsoleInfoMessage("&aLoading plugin addons...");
+			StMessageUtils.sendConsoleInfoMessage("&aLoading plugin addons...");
 
 			try {
 
 				File addonsFolder = StellarPlugin.getPluginInstance().getAddonsFolder();
-				StellarUtils.filePluginExist(StellarPlugin.getPluginInstance().getAddonsFolder(), true);
+				StMixUtils.filePluginExist(StellarPlugin.getPluginInstance().getAddonsFolder(), true);
 				File[] addonsFiles = addonsFolder.listFiles();
 
 
@@ -67,19 +69,19 @@ public class AddonsManager {
 					}
 				} else {
 
-					StellarUtils.sendConsoleInfoMessage("&cNo addons founds in the plugin folder!");
+					StMessageUtils.sendConsoleInfoMessage("&cNo addons founds in the plugin folder!");
 
 				}
 
 			} catch (Exception ex) {
-				StellarUtils.logErrorException(ex, "default");
-				StellarUtils.sendConsoleWarnMessage("&cError loading the plugin addons!");
+				StErrorLogUtils.logErrorException(ex, "default");
+				StMessageUtils.sendConsoleWarnMessage("&cError loading the plugin addons!");
 			}
 
 
 		} else {
 
-			StellarUtils.sendDebugMessage("&cThis plugin have not a addon system!");
+			StMessageUtils.sendDebugMessage("&cThis plugin have not a addon system!");
 
 		}
 
@@ -95,7 +97,7 @@ public class AddonsManager {
 			if (inputStream == null) {
 
 			    // If the yaml file is not found in the addon.jar
-				StellarUtils.sendConsoleWarnMessage("&cThe plugin addons folder have the " + jarFileName + " but it is not a addon as it have not addon.yml inside the jar!");
+				StMessageUtils.sendConsoleWarnMessage("&cThe plugin addons folder have the " + jarFileName + " but it is not a addon as it have not addon.yml inside the jar!");
 				return;
 			}
 
@@ -111,20 +113,20 @@ public class AddonsManager {
 
 			// Check if the addon is for this plugin and continue the code or not
 			if (!addonIsForThisPlugin(jarFileName, plugin)) {
-				StellarUtils.sendConsoleWarnMessage("&cAddon " + jarFileName + " is not intended for this plugin!");
+				StMessageUtils.sendConsoleWarnMessage("&cAddon " + jarFileName + " is not intended for this plugin!");
 				return;
 			}
 
 			// Check if all the addon dependencies are enabled or not and if not add the addon to the disabled addons list
 			if (!areAddonDependenciesEnabled(addonPluginDependencies, jarFileName)) {
-				StellarUtils.sendConsoleWarnMessage("&cDisabling addon " + jarFileName + " as it does not have all the required addon dependencies installed!");
+				StMessageUtils.sendConsoleWarnMessage("&cDisabling addon " + jarFileName + " as it does not have all the required addon dependencies installed!");
 				INSTANCE.disabledAddons.put(addonName, new StellarAddon(addonName, addonVersion, mainClass, plugin, addonPluginDependencies, addonAuthors, null, null));
 				return;
 			}
 
 			// Check if the addon have config or messages file so it need to generate a addon folder
 			if (config){
-				StellarUtils.filePluginExist(new File(StellarPlugin.getPluginInstance().getAddonsFolder(), addonName), true);
+				StMixUtils.filePluginExist(new File(StellarPlugin.getPluginInstance().getAddonsFolder(), addonName), true);
 			}
 
 			// Check if the addon have a main class and load some methods from the addon from the interface
@@ -151,12 +153,12 @@ public class AddonsManager {
 			}
 
 
-			StellarUtils.sendConsoleInfoMessage("&aAddon " + addonName + " loaded V");
+			StMessageUtils.sendConsoleInfoMessage("&aAddon " + addonName + " loaded V");
 
 		} catch (IOException | ClassNotFoundException | NoSuchMethodException | IllegalAccessException |
 				 InvocationTargetException ex) {
-			StellarUtils.logErrorException(ex, "default");
-			StellarUtils.sendConsoleWarnMessage("&cError loading supposed addon " + jarFileName + " !");
+			StErrorLogUtils.logErrorException(ex, "default");
+			StMessageUtils.sendConsoleWarnMessage("&cError loading supposed addon " + jarFileName + " !");
 		}
 	}
 
@@ -177,13 +179,13 @@ public class AddonsManager {
 
 		for (String dependency : addonPluginDependencies) {
 			if (!enabledPluginNames.contains(dependency)) {
-				StellarUtils.sendDebugMessage("&cThe addon " + jarFileName + " have the dependency " + dependency + " that is not installed!");
+				StMessageUtils.sendDebugMessage("&cThe addon " + jarFileName + " have the dependency " + dependency + " that is not installed!");
 				return false;
 			} else {
-				StellarUtils.sendDebugMessage("&aThe addon " + jarFileName + " have the dependency " + dependency + " that is installed!");
+				StMessageUtils.sendDebugMessage("&aThe addon " + jarFileName + " have the dependency " + dependency + " that is installed!");
 			}
 		}
-		StellarUtils.sendDebugMessage("&aThe addon " + jarFileName + " have all the dependencies installed!");
+		StMessageUtils.sendDebugMessage("&aThe addon " + jarFileName + " have all the dependencies installed!");
 		return true;
 	}
 
@@ -198,20 +200,20 @@ public class AddonsManager {
 
 		if (StellarPlugin.getPluginInstance().isPluginIsAStellarMinigame() && plugin.equalsIgnoreCase("StellarMinigame")) {
 
-			StellarUtils.sendDebugMessage("&aThe addon " + jarFileName + " is for this StellarMinigame plugin!");
+			StMessageUtils.sendDebugMessage("&aThe addon " + jarFileName + " is for this StellarMinigame plugin!");
 
 			return true;
 
 		} else if (plugin.equalsIgnoreCase(StellarPlugin.getPluginInstance().getPluginName())) {
 
-			StellarUtils.sendDebugMessage("&aThe addon " + jarFileName + " is for this plugin!");
+			StMessageUtils.sendDebugMessage("&aThe addon " + jarFileName + " is for this plugin!");
 
 			return true;
 
 		} else {
 
-			StellarUtils.sendConsoleWarnMessage("&cThe addon " + jarFileName + " is not for this plugin!");
-			StellarUtils.sendDebugMessage("&cThe addon is for " + plugin + " plugin.");
+			StMessageUtils.sendConsoleWarnMessage("&cThe addon " + jarFileName + " is not for this plugin!");
+			StMessageUtils.sendDebugMessage("&cThe addon is for " + plugin + " plugin.");
 
 			return false;
 		}
@@ -236,7 +238,7 @@ public class AddonsManager {
 				addonInstance.addonConfigReload();
 			}
 		} catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-			StellarUtils.logErrorException(e, "default");
+			StErrorLogUtils.logErrorException(e, "default");
 		}
 	}
 

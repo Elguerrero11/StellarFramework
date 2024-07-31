@@ -1,30 +1,27 @@
 package com.elguerrero.stellarframework.commands;
 
-import com.elguerrero.stellarframework.StellarPlugin;
-import com.elguerrero.stellarframework.utils.StellarDebugReport;
-import com.elguerrero.stellarframework.utils.StellarUtils;
+import com.elguerrero.stellarframework.systems.CacheManagers;
+import com.elguerrero.stellarframework.systems.DebugReport;
+import com.elguerrero.stellarframework.utils.StErrorLogUtils;
+import com.elguerrero.stellarframework.utils.StMixUtils;
 import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.executors.ConsoleCommandExecutor;
 
-
-public class StDebugReportCmd {
+public final class StDebugReportCmd {
 
 	private StDebugReportCmd() {
 	}
 
-	public static void registerDebugReportCommand() {
+	public static void registerDebugReportCmd() {
 
 		try {
-			new CommandAPICommand(StellarPlugin.getPluginInstance().getPluginName() + "-debugreport")
-					.withRequirement(StellarUtils::senderIsConsole)
-					.executesConsole((sender, args) -> {
 
-						StellarDebugReport.getInstance().generateDebugReport();
-
-					})
-					.register();
+			CacheManagers.addCommand(new CommandAPICommand("debugreport")
+							.withRequirement(StMixUtils::senderIsConsole)
+							.executesConsole((ConsoleCommandExecutor) (sender, args) -> DebugReport.getInstance().generateDebugReport()));
 
 		} catch (Exception ex) {
-			StellarUtils.logErrorException(ex, "default");
+			StErrorLogUtils.logErrorException(ex, "default");
 		}
 
 	}
