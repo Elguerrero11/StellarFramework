@@ -13,12 +13,15 @@ This project is licensed under the GNU General Public License v3.0.
 
 <details>
   <summary>View third-party software license details</summary>
-  <p>This project includes software developed by other projects under the following licenses:</p>
-  
-  <p>- **BoostedYAML** developed by **dejvokep** under the **Apache License 2.0**.</p>
-  <p>- **CommandAPI** developed by **JorelAli** under the **MIT License**.</p>
-  <p>- **Adventure** developed by **KyoriPowered** under the **MIT License**.</p>
-
-  <p>The complete licenses can be found in the `licenses` folder.</p>
-
+  <br>
+  This project includes software developed by other projects under the following licenses:
+  <br><br>
+  - **BoostedYAML** developed by **dejvokep** under the **Apache License 2.0**.
+  <br>
+  - **CommandAPI** developed by **JorelAli** under the **MIT License**.
+  <br>
+  - **Adventure** developed by **KyoriPowered** under the **MIT License**.
+  <br><br>
+  The complete licenses can be found in the `licenses` folder.
+  <br>
 </details>
