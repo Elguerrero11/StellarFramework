@@ -2,7 +2,8 @@
 
 **Important notice: This repository has been abandoned**
 
-I am continuing the project by recoding it from scratch to Kotlin in a new repository.\n
+I am continuing the project by recoding it from scratch to Kotlin in a new repository.
+
 You can find the new framework repository at the following link:
 [Stellar-Core](https://link.to.new.repository)
 
